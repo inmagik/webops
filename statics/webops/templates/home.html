@@ -1,0 +1,28 @@
+<div class="panel jumbotron text-center">
+  <h1>WebOps</h1>
+  <p>File processing on the cloud</p>
+  search for an op
+  <p style="margin-top:10px;">
+  <input type="text" placeholder="" style="background-color:#222; border:none; color:#ddd" ng-model="filter.op">
+  </p>
+  
+</div>
+
+<div class="row">
+    <div class="col col-sm-3" ng-repeat="op in ops|filter:filter.op">
+    <div class="panel panel-primary op-box" >
+      <div class="panel-heading panel-op-{{op.package}}">
+        <h2 class="panel-title text-center">{{op.name}}</h2>
+      </div>
+      <div class="panel-body">
+        {{op.description}}
+      </div>
+      <div class="panel-footer text-center">
+        <a ui-sref="home.op({opName:op.name})" class="btn btn-primary"><i class="fa fa-arrow-circle-right  fa-3x"></i></a>
+      </div>
+    </div>
+    </div>
+</div>
+
+
+

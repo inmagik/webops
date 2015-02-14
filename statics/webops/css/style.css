@@ -1,0 +1,46 @@
+body{
+
+}
+.dropbox{
+    border:dashed #bbb 2px;
+    height:60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 5px;
+    margin:10px 0;
+    
+}
+
+.tartan{
+    background-color: #026873;
+background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+background-size: 13px, 29px, 37px, 53px;
+}
+
+
+
+.flashing {
+    -webkit-animation: pulsate 3s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    
+}
+@-webkit-keyframes pulsate {
+    0% {background-color: #026873}
+    50% {background-color: skyblue}
+    100% {background-color: #026873}
+}
+
+.op-box .panel-body{
+    height:120px;
+}
+
+.panel-op-geo{
+    background-color: teal !important;
+}
+
+.panel-op-image{
+    background-color: skyblue !important;
+}

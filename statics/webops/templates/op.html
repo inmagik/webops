@@ -1,0 +1,93 @@
+<div>
+
+<div class="panel panel-primary ">
+      <div class="panel-heading panel-op-{{data.currentOp.package}}" ng-class="{flashing:data.processing}">
+        <h3 class="panel-title">{{data.currentOp.name}}</h3>
+      </div>
+      <div class="panel-body">
+        {{data.currentOp.description}}
+        <hr>
+        <div class="alert alert-dismissable alert-danger" ng-if="data.errors">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Oh snap!</strong> There were some errors processing your request:
+            {{data.errors}}
+            <!--
+            <ul>
+                <li ng-repeat="(field, errors) in data.errors track by $index">
+                    <span ng-if="angular.isArray(errors)">
+                    {{ field }} : <span ng-repeat="err in errors track by $index">{{err}}</span>
+                    </span>
+                    <span ng-if="!angular.isArray(errors)">
+                    {{ field }} : {{errors}}
+                    </span>
+                </li>
+            </ul>
+            -->
+            
+        </div>
+
+        <div class="well panel text-center" ng-if="data.result">
+            <strong>Voilà</strong> Here is your processed file!
+            <p>
+                {{data.result.filename}}
+            </p>
+            <p>
+                <button class="btn btn-lg btn-primary" ng-click="downloadFile()">DOWNLOAD IT</button>
+            </p>
+            
+        </div>
+
+        <h4 class="text-center">Files</h4>
+        <div class="row">
+            <div class="col col-sm-4 col-sm-offset-4" ng-repeat="(name, f) in data.currentOp.file_inputs">  
+                <div ng-if="!filesData[name]">
+                    <div class="dropbox" ng-file-drop ng-file-change="readFile(name, $files)" >
+                        Drop <b>{{name}}</b> here
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-success" ng-file-select ng-file-change="readFile(name, $files)" ng-disabled="data.processing">CHOOSE <b>{{name}}</b></button>
+                    </div>
+                </div>
+                <div class="text-center" ng-if="filesData[name]">
+                    <div class="dropbox">
+                        {{name}}: <b>{{filesMeta[name].name}}</b>
+                    </div>
+                    <button class="btn btn-danger" ng-click="dropFile(name)" ng-disabled="data.processing">CLEAR</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h4 class="text-center">Parameters</h4>
+        <form name="parametersForm" novalidate>
+        <div class="row">
+            <div class="col col-sm-4" ng-repeat="(paramname, param) in data.paramsRequired">  
+                <div class="form-group">
+                    <label>{{paramname}} <span ng-if="param.required">*</span></label>
+                    <input type="text" class="form-control" placeholder="{{paramname}}" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing">
+                    <p class="help-block">{{param.description}}</p>
+                </div>
+            </div>
+        </div>
+        <h5 class="text-center">Optional parameters</h5>
+        <div class="row">
+            <div class="col col-sm-4" ng-repeat="(paramname, param) in data.paramsOptional">  
+                <div class="form-group">
+                    <label>{{paramname}} <span ng-if="param.required">*</span></label>
+                    <input type="text" class="form-control" placeholder="{{paramname}}" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing">
+                    <p class="help-block">{{param.description}}</p>
+                </div>
+            </div>
+        </div>
+        </form>
+
+
+
+
+      </div>
+      <div class="panel-footer text-center panel-op-{{data.currentOp.package}}" ng-class="{flashing:data.processing}">
+        <a class="btn btn-primary btn-lg" ng-click="launch()"><i class="fa fa-rocket"></i> LAUNCH {{data.currentOp.name}}</a>
+      </div>
+    </div>
+
+    
+</div>

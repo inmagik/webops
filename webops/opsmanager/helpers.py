@@ -25,3 +25,25 @@ def export_file(path):
                 'filename' : filename
             }
 
+def make_serializer(name, **kwattrs):
+    return type(name, (serializers.Serializer,), dict(**kwattrs))
+
+
+
+from rest_framework import serializers
+def serializer_from_dict(nm, data):
+
+    fields = {}
+    for k in data.keys():
+        item = data[k]
+        kls = item["serializer_class"]
+        params = item["kwargs"]
+
+        field_klass = getattr(serializers, kls)
+        fields[k] = field_klass(**params)
+
+    return make_serializer(nm, **fields)
+
+
+
+

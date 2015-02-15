@@ -10,7 +10,9 @@
         <div class="alert alert-dismissable alert-danger" ng-if="data.errors">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>Oh snap!</strong> There were some errors processing your request:
+            <pre>
             {{data.errors}}
+            </pre>
             <!--
             <ul>
                 <li ng-repeat="(field, errors) in data.errors track by $index">
@@ -63,8 +65,15 @@
             <div class="col col-sm-4" ng-repeat="(paramname, param) in data.paramsRequired">  
                 <div class="form-group">
                     <label>{{paramname}} <span ng-if="param.required">*</span></label>
-                    <input type="text" class="form-control" placeholder="{{paramname}}" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing">
+
+                    <input ng-if="!param.choices" type="text" class="form-control" placeholder="{{paramname}}" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing">
+                    <select ng-if="param.choices" class="form-control" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing" ng-options="k as v for (k, v) in param.choices"></select>
+
                     <p class="help-block">{{param.description}}</p>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -73,7 +82,8 @@
             <div class="col col-sm-4" ng-repeat="(paramname, param) in data.paramsOptional">  
                 <div class="form-group">
                     <label>{{paramname}} <span ng-if="param.required">*</span></label>
-                    <input type="text" class="form-control" placeholder="{{paramname}}" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing">
+                    <input ng-if="!param.choices" type="text" class="form-control" placeholder="{{paramname}}" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing">
+                    <select ng-if="param.choices" class="form-control" ng-model="paramsData[paramname]" name="{{paramname}}" ng-required="param.required" ng-disabled="data.processing" ng-options="k as v for (k, v) in param.choices"></select>
                     <p class="help-block">{{param.description}}</p>
                 </div>
             </div>

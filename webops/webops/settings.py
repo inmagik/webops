@@ -38,12 +38,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'corsheaders',
+    'rest_framework',
+    'debug_toolbar',
 
     'opsmanager',
     'geoops',
     'imageops',
-    'rest_framework',
-    'debug_toolbar',
+    'gitops',
+    
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -95,3 +98,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+
+## FINALLY OUR CONFIGURATION
+GITOPS_BASE_CACHE = os.path.join(BASE_DIR, "gitops_cache")
+GITOPS_REMOTE_OPS = [ "https://github.com/bianchimro/remote-op-test.git"]

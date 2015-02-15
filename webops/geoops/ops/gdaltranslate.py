@@ -5,40 +5,37 @@ import datetime
 from opsmanager.ops import BaseOp
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
+ 
+from .gdal_formats import GDAL_TRANSLATE_SUPPORTED_FORMATS
 
-OGR_SUPPORTED_FORMATS = ["GeoJSON", "CSV", "GML", "GPX" ,"KML", "SQLite", "GMT", "GPKG", 
-    "DXF", "Geoconcept", "GeoRSS", "PGDump", "ODS", "XLSX", ""]
 
 
-class OgrParamsSerializer(serializers.Serializer):
-    #should be choiceField!
-    a_srs = serializers.CharField(help_text='Assign an input SRS',required=False)
-    t_srs = serializers.CharField(help_text='Reproject/transform to this SRS on output',required=False)
-    f = serializers.ChoiceField(help_text='Format name', choices=OGR_SUPPORTED_FORMATS)
+class TranslateParamsSerializer(serializers.Serializer):
+    of = serializers.ChoiceField(help_text='Format name', choices=GDAL_TRANSLATE_SUPPORTED_FORMATS)
     
     
 
-class OgrFilesSerializer(serializers.Serializer):
+class TranslateFilesSerializer(serializers.Serializer):
     in_file = serializers.FileField(help_text='Input file')
 
 
-class OgrOp(BaseOp):
+class GDALTranslateOp(BaseOp):
 
-    op_name  = "ogr2ogr"
+    op_name  = "gdal_translate"
     op_package = "geo"
-    op_description = "Use ogr2ogr to convert geographical vector file formats"
-    parameters_serializer = OgrParamsSerializer
-    files_serializer = OgrFilesSerializer
+    op_description = "Use gdal_translate to convert geographical raster file formats"
+    parameters_serializer = TranslateParamsSerializer
+    files_serializer = TranslateFilesSerializer
     
     def get_dest_extension(self, parameters_dict):
         """
         """
-        return "."+parameters_dict['f']
+        return "."+parameters_dict['of']
         
     
     def process(self, files, parameters):
         
-        cmd = ["ogr2ogr"]
+        cmd = ["gdal_translate"]
         #appending params
         for key in parameters.validated_data:
             cmd.append("-" + key)
@@ -54,8 +51,8 @@ class OgrOp(BaseOp):
         tmp_dst=  tmp_src.name + self.get_dest_extension(parameters.validated_data)
 
         #appending args [files]
-        cmd.append(tmp_dst)
         cmd.append(tmp_src.name)
+        cmd.append(tmp_dst)
         
         
         try:

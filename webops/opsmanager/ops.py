@@ -13,6 +13,8 @@ class BaseOp(APIView):
     @classmethod
     def get_parameters_meta(self):
         out = {}
+        if not getattr(self,"parameters_serializer" , None):
+            return out
         fields = self.parameters_serializer().get_fields()
         for field in fields:
             out[field] = { 
@@ -56,8 +58,12 @@ class BaseOp(APIView):
 
 
     def post(self, request, format=None):
-        parameters = self.parameters_serializer(data=request.data)
-        parameters.is_valid(raise_exception=True)
+        if getattr(self,"parameters_serializer" , None):
+            parameters = self.parameters_serializer(data=request.data)
+            parameters.is_valid(raise_exception=True)
+        else:
+            parameters = {}
+
         files = self.files_serializer(data=request.data)
         files.is_valid(raise_exception=True)
 

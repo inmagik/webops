@@ -5,7 +5,7 @@ It provides:
 * REST api to get metadata about accessible operations and endpoints to run them (based ond Django)
 * a web interface to configure and run operations (based on Angular)
 * a command line interface to access API from the bash (not here yet)
-* possibly various wrappers for accessing the API from different languages. (not here yet, first candidata is python)
+* possibly various wrappers for accessing the API from different languages. (not here yet, first candidate is python)
 
 Currently the project is focused on operations that output files, in particular operations on geographical data and images.
 In the early stages of the project, some operations will be included in the project itself, but on the long term this will be a container/framework and operations will be added by other django apps. 

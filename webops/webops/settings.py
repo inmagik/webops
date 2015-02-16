@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'opsmanager',
     'geoops',
     'imageops',
-    'gitops',
+    #'gitops',
     
     
 )

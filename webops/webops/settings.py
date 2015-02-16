@@ -97,6 +97,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+if DEBUG:
+    STATICFILES_DIRS = (
+        os.path.abspath(os.path.join(BASE_DIR, "../statics/webops")),
+    )
+
 CORS_ORIGIN_ALLOW_ALL = True
 
 

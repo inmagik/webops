@@ -8,9 +8,3 @@ _register.register_op(OgrOp)
 _register.register_op(GDALTranslateOp)
 _register.register_op(BufferOp)
 
-
-class GeoOpsAppConfig(AppConfig):
-    name = 'geoops'
-    verbose_name = 'GeoOps'
-
-        

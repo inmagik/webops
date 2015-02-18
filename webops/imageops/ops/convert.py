@@ -2,6 +2,7 @@ import tempfile
 import subprocess
 import datetime
 from opsmanager.ops import BaseOp
+import os
 
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
@@ -23,6 +24,17 @@ class ConvertOp(BaseOp):
     op_description = "Use imagemagik convert to convert image file formats"
     parameters_serializer = ConvertParamsSerializer
     files_serializer = ConvertFilesSerializer
+
+    @classmethod
+    def check_op(self):
+        """
+        This class method is called before registering operation.
+        It's optional.
+        """
+        cmd = ["convert", "--help"]
+        devnull = open(os.devnull, 'w')
+        subprocess.call(cmd, stdout=devnull, stderr=devnull)
+
     
     def get_dest_extension(self, parameters_dict):
         """

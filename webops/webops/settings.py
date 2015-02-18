@@ -110,3 +110,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 ## GIT BASED CONFIGURATION ... WORK IN PROGRESS ...
 #GITOPS_BASE_CACHE = os.path.join(BASE_DIR, "gitops_cache")
 #GITOPS_REMOTE_OPS = [ "https://github.com/bianchimro/remote-op-test.git"]
+
+#this is the default
+WEBOPS_BREAK_ON_FAIL_TEST = False

@@ -1,6 +1,7 @@
 import tempfile
 import subprocess
 import datetime
+import os
 
 from opsmanager.ops import BaseOp
 from rest_framework import serializers
@@ -29,6 +30,18 @@ class OgrOp(BaseOp):
     op_description = "Use ogr2ogr to convert geographical vector file formats"
     parameters_serializer = OgrParamsSerializer
     files_serializer = OgrFilesSerializer
+
+    
+    @classmethod
+    def check_op(self):
+        """
+        This class method is called before registering operation.
+        It's optional.
+        """
+        cmd = ["ogr2ogr", "--help"]
+        devnull = open(os.devnull, 'w')
+        subprocess.call(cmd, stdout=devnull, stderr=devnull)
+
     
     def get_dest_extension(self, parameters_dict):
         """
@@ -39,6 +52,7 @@ class OgrOp(BaseOp):
     def process(self, files, parameters):
         
         cmd = ["ogr2ogr"]
+        
         #appending params
         for key in parameters.validated_data:
             cmd.append("-" + key)
@@ -62,8 +76,8 @@ class OgrOp(BaseOp):
           msg = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
         except Exception, e:
-          print e.output
-          raise APIException(detail=str(e.output))
+            print e.output
+            raise APIException(detail=str(e.output))
 
         return { "filename" : tmp_dst }
 

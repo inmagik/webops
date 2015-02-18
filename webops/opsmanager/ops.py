@@ -9,6 +9,10 @@ class BaseOp(APIView):
 
     #permission_classes = (permissions.AllowAny,)
     op_package = "webops"
+
+    @classmethod
+    def check_op(self):
+        raise NotImplementedError
     
     @classmethod
     def get_parameters_meta(self):

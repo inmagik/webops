@@ -3,7 +3,7 @@ angular.module("WebOps", ['ui.router', 'restangular', 'angularFileUpload'])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider, RestangularProvider){
 
-    var baseServerUrl = 'http://localhost:8000/';
+    var baseServerUrl = '/';
     RestangularProvider.setBaseUrl(baseServerUrl);
 
     $httpProvider.defaults.useXDomain = true;

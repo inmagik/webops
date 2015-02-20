@@ -32,7 +32,7 @@ class PDFToTextOp(BaseOp):
         tmp_src = write_to_temp(in_file)
         
         #get a tmp filename for dst
-        tmp_dst=  tmp_src.replace(".pdf", ".txt")
+        tmp_dst=  tmp_src.lower().replace(".pdf", ".txt")
 
         #appending args [files]
         cmd.append(tmp_src)

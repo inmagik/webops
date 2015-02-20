@@ -59,6 +59,9 @@ class BaseOp(APIView):
             #print out_file
             out_response = export_file(out_file['filename'])
         except Exception, e:
+            #print str(e)
+            #raise e
+
             raise APIException(detail=str(e))
             
         

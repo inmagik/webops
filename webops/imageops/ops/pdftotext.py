@@ -6,10 +6,10 @@ from opsmanager.helpers import write_to_temp
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
- 
+from opsmanager.serializers import FileField 
 
 class ConvertParametersSerializer(serializers.Serializer):
-    in_file = serializers.FileField(help_text='Input file')
+    in_file = FileField(help_text='Input file')
 
 
 class PDFToTextOp(BaseOp):
@@ -35,7 +35,7 @@ class PDFToTextOp(BaseOp):
         tmp_dst=  tmp_src.replace(".pdf", ".txt")
 
         #appending args [files]
-        cmd.append(tmp_src.name)
+        cmd.append(tmp_src)
         
         
         try:

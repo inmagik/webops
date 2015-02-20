@@ -5,53 +5,66 @@ import sys
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.utils.translation import ugettext_lazy as _
-
-from rest_framework.fields import FileField
-
-
-DEFAULT_CONTENT_TYPE = "application/octet-stream"
+import json
+from rest_framework import serializers
+import requests
 
 EMPTY_VALUES = (None, '', [], (), {})
-
-
-if sys.version_info.major == 3:
-    string_type = str
-else:
-    string_type = basestring
-
-
-class Base64ImageField(FileField):
+ 
+class FileField(serializers.FileField):
     """
-    A django-rest-framework field for handling file-uploads through raw post data.
-    It uses base64 for en-/decoding the contents of the file.
+    
     """
-    def to_internal_value(self, base64_data):
-        # Check if this is a base64 string
-        if base64_data in EMPTY_VALUES:
+
+    def get_file_data_from_base64(self, data):
+        content = data['data'].split(",")[1]
+        # Try to decode the file. Return validation error if it fails.
+        try:
+            decoded_file = base64.b64decode(content)
+
+        except TypeError:
+            raise ValidationError(_("Please upload a valid file."))
+
+        # Generate file name:
+        file_name = data['filename']
+        # Get the file name extension:
+        
+        file_data = ContentFile(decoded_file, name=file_name)
+        return file_data
+
+
+    def get_file_data_from_url(self, data):
+        url = data['data']
+        r = requests.get(url)
+        file_name = url.split("/")[-1]
+        file_data = ContentFile(r.content, name=file_name)
+        return file_data
+
+
+
+    def to_internal_value(self, data):
+
+        
+        if data in EMPTY_VALUES:
             return None
 
-        if isinstance(base64_data, string_type):
-            # Try to decode the file. Return validation error if it fails.
-            try:
-                decoded_file = base64.b64decode(base64_data)
-            except TypeError:
-                raise ValidationError(_("Please upload a valid file."))
-            # Generate file name:
-            file_name = str(uuid.uuid4())[:12]  # 12 characters are more than enough.
-            # Get the file name extension:
-            file_extension = self.get_file_extension(file_name, decoded_file)
-            #if file_extension not in ALLOWED_IMAGE_TYPES:
-                #raise ValidationError(_("The type of the image couldn't been determined."))
-            complete_file_name = file_name + "." + file_extension
-            data = ContentFile(decoded_file, name=complete_file_name)
-            return super(Base64ImageField, self).to_internal_value(data)
-        raise ValidationError(_('This is not an base64 string'))
+        # Check if this is a base64 string
+        if isinstance(data, dict):
+            if 'data' not in data:
+                raise ValidationError(_("we need the data key!!"))
 
-    def to_representation(self, value):
-        # Return url including domain name.
-        return value.name
+            if data['data'].startswith('data:'):
+                file_data = self.get_file_data_from_base64(data)
 
-    def get_file_extension(self, filename, decoded_file):
-        #extension = imghdr.what(filename, decoded_file)
-        extension = "jpg" if extension == "jpeg" else extension
-        return extension
+            if data['data'].startswith('http'):
+                file_data = self.get_file_data_from_url(data)
+
+            
+            return super(FileField,self).to_internal_value(file_data)
+            
+        
+        else:
+            return super(FileField,self).to_internal_value(data)
+
+    
+    

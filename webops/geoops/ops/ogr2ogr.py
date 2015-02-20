@@ -4,6 +4,8 @@ import datetime
 import os
 
 from opsmanager.ops import BaseOp
+from opsmanager.serializers import FileField 
+
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
@@ -12,7 +14,7 @@ OGR_SUPPORTED_FORMATS = ["GeoJSON", "CSV", "GML", "GPX" ,"KML", "SQLite", "GMT",
 
 
 class OgrParamsSerializer(serializers.Serializer):
-    in_file = serializers.FileField(help_text='Input file')
+    in_file = FileField(help_text='Input file')
     #should be choiceField!
     a_srs = serializers.CharField(help_text='Assign an input SRS',required=False)
     t_srs = serializers.CharField(help_text='Reproject/transform to this SRS on output',required=False)

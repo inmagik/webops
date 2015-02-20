@@ -4,6 +4,7 @@ import tempfile
 import datetime
 
 from opsmanager.ops import BaseOp
+from opsmanager.serializers import FileField
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
@@ -28,7 +29,7 @@ def make_buffer(infile,outfile,buffdist):
 
 
 class BufferParamsSerializer(serializers.Serializer):
-    in_file = serializers.FileField(help_text='Input file')
+    in_file = FileField(help_text='Input file')
     distance = serializers.CharField(help_text='Buffer distance')
 
     

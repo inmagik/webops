@@ -3,6 +3,7 @@ import subprocess
 import datetime
 from opsmanager.ops import BaseOp
 from opsmanager.helpers import write_to_temp
+from opsmanager.serializers import FileField 
 import os
 
 from rest_framework import serializers
@@ -10,7 +11,7 @@ from rest_framework.exceptions import APIException
 
 
 class ConvertParamsSerializer(serializers.Serializer):
-    in_file = serializers.FileField(help_text='Input file')
+    in_file = FileField(help_text='Input file')
     #should be choiceField!
     f = serializers.CharField(help_text='Target extension')
     

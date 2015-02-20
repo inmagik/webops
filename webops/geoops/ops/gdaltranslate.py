@@ -3,6 +3,9 @@ import subprocess
 import datetime
 
 from opsmanager.ops import BaseOp
+from opsmanager.serializers import FileField 
+
+
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
  
@@ -12,7 +15,7 @@ from .gdal_formats import GDAL_TRANSLATE_SUPPORTED_FORMATS
 
 class TranslateParamsSerializer(serializers.Serializer):
     of = serializers.ChoiceField(help_text='Format name', choices=GDAL_TRANSLATE_SUPPORTED_FORMATS)
-    in_file = serializers.FileField(help_text='Input file')
+    in_file = FileField(help_text='Input file')
     
 
 class GDALTranslateOp(BaseOp):

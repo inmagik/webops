@@ -4,6 +4,8 @@ import tempfile
 import datetime
 
 from opsmanager.ops import BaseOp
+from opsmanager.serializers import FileField 
+
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
@@ -30,9 +32,8 @@ def make_intersection(InFile1,InFile2,outfile):
 
 class IntersectionParametersSerializer(serializers.Serializer):
 
-    in_file1 = serializers.FileField(help_text='Input file')
-    in_file2 = serializers.FileField(help_text='Input file')
-
+    in_file1 = FileField(help_text='Input file')
+    in_file2 = FileField(help_text='Input file')
 
 
 

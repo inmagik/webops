@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
+from rest_framework.exceptions import APIException
 from .helpers import export_file
 
 BASE_OPS_URL = 'ops'
@@ -55,10 +56,11 @@ class BaseOp(APIView):
         
         try:
             out_file = self.process(parameters)
-            print out_file
+            #print out_file
             out_response = export_file(out_file['filename'])
         except Exception, e:
-            raise e
+            raise APIException(detail=str(e))
+            
         
         return Response(out_response)
 

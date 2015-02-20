@@ -2,6 +2,7 @@ import tempfile
 import subprocess
 import datetime
 from opsmanager.ops import BaseOp
+from opsmanager.helpers import write_to_temp
 import os
 
 from rest_framework import serializers
@@ -48,15 +49,13 @@ class ConvertOp(BaseOp):
         in_file = parameters.validated_data["in_file"]
 
         #get it on the tmp
-        tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
-        tmp_src.write(in_file.read())
-        tmp_src.close()
+        tmp_src = write_to_temp(in_file)
         
         #get a tmp filename for dst
-        tmp_dst=  tmp_src.name + self.get_dest_extension(parameters.validated_data)
+        tmp_dst=  tmp_src + self.get_dest_extension(parameters.validated_data)
 
         #appending args [files]
-        cmd.append(tmp_src.name)
+        cmd.append(tmp_src)
         cmd.append(tmp_dst)
         
         

@@ -25,6 +25,18 @@ def export_file(path):
                 'filename' : filename
             }
 
+
+def write_to_temp(in_file):
+    #get it on the tmp
+    tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
+    tmp_src.write(in_file.read())
+    tmp_src.close()
+    return tmp_src.name
+        
+
+
+
+
 def make_serializer(name, **kwattrs):
     return type(name, (serializers.Serializer,), dict(**kwattrs))
 

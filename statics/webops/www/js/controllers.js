@@ -110,6 +110,11 @@ angular.module("WebOps")
           .then(function(blob){
             saveAs(blob, $scope.data.result.filename);  
           })
+    };
+
+
+    $scope.clearFile = function(key){
+        delete $scope.filesData[key];
     }
 
 

@@ -9,12 +9,10 @@ from rest_framework.exceptions import APIException
 
 
 class ConvertParamsSerializer(serializers.Serializer):
+    in_file = serializers.FileField(help_text='Input file')
     #should be choiceField!
     f = serializers.CharField(help_text='Target extension')
     
-
-class ConvertFilesSerializer(serializers.Serializer):
-    in_file = serializers.FileField(help_text='Input file')
 
 
 class ConvertOp(BaseOp):
@@ -23,7 +21,7 @@ class ConvertOp(BaseOp):
     op_package = "image"
     op_description = "Use imagemagik convert to convert image file formats"
     parameters_serializer = ConvertParamsSerializer
-    files_serializer = ConvertFilesSerializer
+    
 
     @classmethod
     def check_op(self):
@@ -42,12 +40,12 @@ class ConvertOp(BaseOp):
         return "."+parameters_dict['f']
         
     
-    def process(self, files, parameters):
+    def process(self, parameters):
         
         
         cmd = ["convert"]
     
-        in_file = files.validated_data["in_file"]
+        in_file = parameters.validated_data["in_file"]
 
         #get it on the tmp
         tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)

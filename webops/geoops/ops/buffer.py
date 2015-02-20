@@ -28,12 +28,8 @@ def make_buffer(infile,outfile,buffdist):
 
 
 class BufferParamsSerializer(serializers.Serializer):
-
-    distance = serializers.CharField(help_text='Buffer distance')
-
-class BufferFilesSerializer(serializers.Serializer):
-
     in_file = serializers.FileField(help_text='Input file')
+    distance = serializers.CharField(help_text='Buffer distance')
 
     
 
@@ -43,15 +39,14 @@ class BufferOp(BaseOp):
     op_package = "geo"
     op_description = "Create buffers from geometries"
     parameters_serializer = BufferParamsSerializer
-    files_serializer = BufferFilesSerializer
-
+    
 
     def get_dest_extension(self, parameters_dict):
         return ".json"
 
-    def process(self, files, parameters):
+    def process(self,  parameters):
         
-        in_file = files.validated_data["in_file"]
+        in_file = parameters.validated_data.pop("in_file")
 
         #get it on the tmp
         tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)

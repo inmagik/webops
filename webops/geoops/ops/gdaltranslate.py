@@ -12,12 +12,8 @@ from .gdal_formats import GDAL_TRANSLATE_SUPPORTED_FORMATS
 
 class TranslateParamsSerializer(serializers.Serializer):
     of = serializers.ChoiceField(help_text='Format name', choices=GDAL_TRANSLATE_SUPPORTED_FORMATS)
-    
-    
-
-class TranslateFilesSerializer(serializers.Serializer):
     in_file = serializers.FileField(help_text='Input file')
-
+    
 
 class GDALTranslateOp(BaseOp):
 
@@ -25,7 +21,7 @@ class GDALTranslateOp(BaseOp):
     op_package = "geo"
     op_description = "Use gdal_translate to convert geographical raster file formats"
     parameters_serializer = TranslateParamsSerializer
-    files_serializer = TranslateFilesSerializer
+    
     
     def get_dest_extension(self, parameters_dict):
         """
@@ -33,16 +29,16 @@ class GDALTranslateOp(BaseOp):
         return "."+parameters_dict['of']
         
     
-    def process(self, files, parameters):
+    def process(self, parameters):
         
         cmd = ["gdal_translate"]
+        in_file = parameters.validated_data.pop("in_file")
         #appending params
         for key in parameters.validated_data:
             cmd.append("-" + key)
             cmd.append('%s' % str(parameters.validated_data[key]))
 
-        in_file = files.validated_data["in_file"]
-
+        
         #get it on the tmp
         tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
         tmp_src.write(in_file.read())

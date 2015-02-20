@@ -28,7 +28,7 @@ def make_intersection(InFile1,InFile2,outfile):
 
 
 
-class IntersectionFilesSerializer(serializers.Serializer):
+class IntersectionParametersSerializer(serializers.Serializer):
 
     in_file1 = serializers.FileField(help_text='Input file')
     in_file2 = serializers.FileField(help_text='Input file')
@@ -42,15 +42,15 @@ class IntersectionOp(BaseOp):
     op_package = "geo"
     op_description = "Create intersection from two geojson"
     #parameters_serializer = IntersectionParamsSerializer
-    files_serializer = IntersectionFilesSerializer
+    files_serializer = IntersectionParametersSerializer
 
 
 
 
-    def process(self, files, parameters):
+    def process(self, parameters):
 
-        file1 = files.validated_data["in_file1"]
-        file2 = files.validated_data["in_file2"]
+        file1 = parameters.validated_data["in_file1"]
+        file2 = parameters.validated_data["in_file2"]
 
         #get it on the tmp
         tmp_src1 = tempfile.NamedTemporaryFile(suffix=file1.name, delete=False)

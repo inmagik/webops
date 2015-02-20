@@ -23,6 +23,7 @@ angular.module("WebOps")
     console.log(op)    
     $scope.data = {
         currentOp : op,
+        fileParams : {},
         paramsRequired : {},
         paramsOptional : {},
         processing : false,
@@ -31,12 +32,18 @@ angular.module("WebOps")
     };
 
     _.each(op.parameters, function(p, pname){
+        
+
+        if(p.type == 'FileField'){
+            $scope.data.fileParams[pname] = p;
+        } else {
             if(p.required){
                 $scope.data.paramsRequired[pname] = p;
             } else {
                 $scope.data.paramsOptional[pname] = p;
             }
-        })
+        };
+    })
 
     $scope.paramsData = {};
     $scope.filesData = {};

@@ -12,15 +12,12 @@ OGR_SUPPORTED_FORMATS = ["GeoJSON", "CSV", "GML", "GPX" ,"KML", "SQLite", "GMT",
 
 
 class OgrParamsSerializer(serializers.Serializer):
+    in_file = serializers.FileField(help_text='Input file')
     #should be choiceField!
     a_srs = serializers.CharField(help_text='Assign an input SRS',required=False)
     t_srs = serializers.CharField(help_text='Reproject/transform to this SRS on output',required=False)
     f = serializers.ChoiceField(help_text='Format name', choices=OGR_SUPPORTED_FORMATS)
     
-    
-
-class OgrFilesSerializer(serializers.Serializer):
-    in_file = serializers.FileField(help_text='Input file')
 
 
 class OgrOp(BaseOp):
@@ -29,7 +26,6 @@ class OgrOp(BaseOp):
     op_package = "geo"
     op_description = "Use ogr2ogr to convert geographical vector file formats"
     parameters_serializer = OgrParamsSerializer
-    files_serializer = OgrFilesSerializer
 
     
     @classmethod
@@ -49,17 +45,17 @@ class OgrOp(BaseOp):
         return "."+parameters_dict['f']
         
     
-    def process(self, files, parameters):
+    def process(self, parameters):
         
         cmd = ["ogr2ogr"]
+
+        in_file = parameters.validated_data.pop("in_file")
         
         #appending params
         for key in parameters.validated_data:
             cmd.append("-" + key)
             cmd.append('%s' % str(parameters.validated_data[key]))
-
-        in_file = files.validated_data["in_file"]
-
+            
         #get it on the tmp
         tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
         tmp_src.write(in_file.read())

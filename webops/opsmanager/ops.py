@@ -30,27 +30,11 @@ class BaseOp(APIView):
 
         return out
 
-    @classmethod
-    def get_files_meta(self):
-        out = {}
-        fields = self.files_serializer().get_fields()
-        for field in fields:
-            out[field] = { 
-                'type' : fields[field].__class__.__name__ ,
-                'description' : fields[field].help_text,
-                'choices' : getattr(fields[field], 'choices', None),
-                'required' : getattr(fields[field], 'required', None),
-
-                }
-
-        return out        
-
     
     @classmethod
     def get_meta(self, request):
         meta = { 'name' : self.op_name, 'description' : self.op_description , 'package':self.op_package}
         meta['parameters'] = self.get_parameters_meta()
-        meta['file_inputs'] = self.get_files_meta()
         meta['abs_url'] = request.build_absolute_uri(self.op_name + "/")
         meta['url'] = BASE_OPS_URL + '/' + self.op_name 
 
@@ -68,11 +52,9 @@ class BaseOp(APIView):
         else:
             parameters = {}
 
-        files = self.files_serializer(data=request.data)
-        files.is_valid(raise_exception=True)
-
+        
         try:
-            out_file = self.process(files, parameters)
+            out_file = self.process(parameters)
             print out_file
             out_response = export_file(out_file['filename'])
         except Exception, e:

@@ -3,10 +3,11 @@ from opsmanager.register import _register
 from .ops.ogr2ogr import OgrOp
 from .ops.buffer import BufferOp
 from .ops.intersection import IntersectionOp
-
 from .ops.gdaltranslate import GDALTranslateOp
+from .ops.geocode import GeocodeOp
 
 _register.register_op(OgrOp)
 _register.register_op(GDALTranslateOp)
 _register.register_op(BufferOp)
 _register.register_op(IntersectionOp)
+_register.register_op(GeocodeOp)

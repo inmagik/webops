@@ -34,7 +34,26 @@ def write_to_temp(in_file):
     return tmp_src.name
         
 
+def unzip_to_temp(in_file):
+    
+    tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
+    tmp_src.write(in_file.read())
+    tmp_src.close()
 
+    dst_folder = tempfile.mkdtemp()
+    with zipfile.ZipFile(tmp_src.name, "r") as z:
+        z.extractall(dst_folder)
+
+    os.unlink(tmp_src.name)
+    return [os.path.join(dst_folder, x) for x in os.listdir(dst_folder)]
+
+def zip_to_temp(files):
+    tmp_dst = tempfile.NamedTemporaryFile(suffix=".zip", delete=False)
+    tmp_dst.close()
+    with zipfile.ZipFile(tmp_dst.name, "w") as z:
+        for f in files:
+            z.write(f, os.path.basename(f))
+    return tmp_dst.name
 
 
 def make_serializer(name, **kwattrs):

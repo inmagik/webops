@@ -42,8 +42,7 @@ class IntersectionOp(BaseOp):
     op_name  = "Intersection"
     op_package = "geo"
     op_description = "Create intersection from two geojson"
-    #parameters_serializer = IntersectionParamsSerializer
-    files_serializer = IntersectionParametersSerializer
+    parameters_serializer = IntersectionParametersSerializer
 
 
 

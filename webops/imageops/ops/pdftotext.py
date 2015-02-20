@@ -2,13 +2,13 @@ import tempfile
 import subprocess
 import datetime
 from opsmanager.ops import BaseOp
-
+from opsmanager.helpers import write_to_temp
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
  
 
-class ConvertFilesSerializer(serializers.Serializer):
+class ConvertParametersSerializer(serializers.Serializer):
     in_file = serializers.FileField(help_text='Input file')
 
 
@@ -17,24 +17,22 @@ class PDFToTextOp(BaseOp):
     op_name  = "pdftotext"
     op_package = "image"
     op_description = "Extract text from pdf files"
-    files_serializer = ConvertFilesSerializer
+    parameters_serializer = ConvertParametersSerializer
     
         
     
-    def process(self, files, parameters):
+    def process(self, parameters):
         
         
         cmd = ["pdftotext"]
     
-        in_file = files.validated_data["in_file"]
+        in_file = parameters.validated_data["in_file"]
 
         #get it on the tmp
-        tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
-        tmp_src.write(in_file.read())
-        tmp_src.close()
+        tmp_src = write_to_temp(in_file)
         
         #get a tmp filename for dst
-        tmp_dst=  tmp_src.name.replace(".pdf", ".txt")
+        tmp_dst=  tmp_src.replace(".pdf", ".txt")
 
         #appending args [files]
         cmd.append(tmp_src.name)

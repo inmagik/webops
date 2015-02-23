@@ -42,6 +42,9 @@ def compose_graph(data):
     partials  = { }
     ops_inputs = {}
 
+    #TODO:PASS IN RANDOM NAME
+    op_name = data["op_name"] or "GraphOp"
+    op_description = data["op_description"] or "GraphOp op_description"
 
     ops = data["ops"]
     for op in ops:
@@ -67,7 +70,6 @@ def compose_graph(data):
 
     output_candidates = all_ops
     
-
     deps = {}
     wires = []
     if "wires" in data:
@@ -97,27 +99,20 @@ def compose_graph(data):
     if len(output_candidates) > 1 and "output_op" not in data:
         raise APIException(detail="Too many output candidates. Please use output_op to specify exactly one")        
 
-    print output_candidates
     output_op = output_candidates[0]
     
-    print deps
-
-
     #we should have 1 output candidate, deps and inputs there.
+    
     # let's build the process function
     # it should:
     # - remap serializer inputs
     # - combine process functions.
-
-
     def new_process(self, parameters):
         outputs = { }
 
         def remap_parameters(p2, op_id):
             params = {}
-            #print ops_inputs
             ins = ops_inputs.keys()
-            #print "sss", ins
             for fieldname in ins:
                 op, name = fieldname.split(":")
                 if fieldname in p2:
@@ -126,7 +121,6 @@ def compose_graph(data):
 
 
         def process_op(op):
-            
             p = {}
             if op in deps:
                 for dep in deps[op]:
@@ -136,42 +130,29 @@ def compose_graph(data):
                         print "ook", dep
                         
                     p[dep["target"]] = outputs[dep["name"]]
-                    
             
             op_params = remap_parameters(parameters, op)
             op_params.update(p)
-
-
 
             ser = partial_ops[op].parameters_serializer(data=op_params)
             ser.is_valid(raise_exception=True)
             
             print "processing", op
             out =  partial_ops[op]().process(ser.validated_data)
-
             print "done", op
             return out
-
         
         return process_op(output_op)
 
-
-        
-        
-        
-
-    #TODO:PASS IN RANDOM NAME
-
     #let's build a new serializer to validate input
-   
     new_parameters_serializer = type("GraphOpSerializer", (serializers.Serializer,), copy.deepcopy(ops_inputs))
-    print new_parameters_serializer
     
-    graph_op = type("GraphOp", (BaseOp,),
+    #finally the composed operation
+    graph_op = type("GraphOp", 
+        (BaseOp,),
         {"process": new_process, "parameters_serializer" : new_parameters_serializer,
-        "op_name" : "GraphOp", "op_description": "blah a graph!" })
-    
-    
+        "op_name" : op_name, "op_description": op_description }
+    )
     
     return graph_op
     

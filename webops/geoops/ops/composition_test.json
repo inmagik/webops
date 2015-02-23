@@ -1,5 +1,6 @@
 { 
-
+    "op_name" : "GeoJSON then buffer then KML",
+    "op_description" : "Composition test between ogr2ogr and buffer!",
     "ops" : [
         {
             "id" : "op1",
@@ -10,9 +11,13 @@
         },
         {
             "id" : "op2",
-            "op" : "buffer",
+            "op" : "buffer"
+        },
+        {
+            "id" : "op3",
+            "op" : "ogr2ogr",
             "partials" : {
-                "distance" : 5
+                "f" : "KML"
             }
         }
     ],
@@ -21,6 +26,10 @@
         {
             "from" : "op1",
             "to" : "op2:in_file"
+        },
+        {
+            "from" : "op2",
+            "to" : "op3:in_file"
         }
     ]
 

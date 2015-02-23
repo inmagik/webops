@@ -55,7 +55,7 @@ class BaseOp(APIView):
 
         
         try:
-            out_file = self.process(parameters)
+            out_file = self.process(parameters.validated_data)
             #print out_file
             out_response = export_file(out_file['filename'])
         except Exception, e:

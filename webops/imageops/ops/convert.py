@@ -47,13 +47,13 @@ class ConvertOp(BaseOp):
         
         cmd = ["convert"]
     
-        in_file = parameters.validated_data["in_file"]
+        in_file = parameters["in_file"]
 
         #get it on the tmp
         tmp_src = write_to_temp(in_file)
         
         #get a tmp filename for dst
-        tmp_dst=  tmp_src + self.get_dest_extension(parameters.validated_data)
+        tmp_dst=  tmp_src + self.get_dest_extension(parameters)
 
         #appending args [files]
         cmd.append(tmp_src)

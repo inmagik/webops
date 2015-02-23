@@ -112,7 +112,7 @@ angular.module("WebOps")
             });
             console.log("hs", jsond)
 
-            $http.post(op.abs_url, jsond)
+            $http.post(op.abs_url, jsond, {timeout:300000})
             .then(function(resp){
                 console.log("wow!", resp);
                 $timeout(function(){

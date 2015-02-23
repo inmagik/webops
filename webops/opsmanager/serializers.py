@@ -17,18 +17,29 @@ class FileField(serializers.FileField):
     """
 
     def get_file_data_from_base64(self, data):
-        content = data['data'].split(",")[1]
+        if data['data'].startswith("data"):
+            content = data['data'].split(",")[1]
+        else:
+            content = data['data']
+        
+
+        #print "j", content
+
+
         # Try to decode the file. Return validation error if it fails.
         try:
             decoded_file = base64.b64decode(content)
 
         except TypeError:
             raise ValidationError(_("Please upload a valid file."))
+        except:
+            raise
 
         # Generate file name:
         file_name = data['filename']
         # Get the file name extension:
         
+
         file_data = ContentFile(decoded_file, name=file_name)
         return file_data
 
@@ -56,8 +67,11 @@ class FileField(serializers.FileField):
             if data['data'].startswith('data:'):
                 file_data = self.get_file_data_from_base64(data)
 
-            if data['data'].startswith('http'):
+            elif data['data'].startswith('http'):
                 file_data = self.get_file_data_from_url(data)
+
+            else:
+                file_data = self.get_file_data_from_base64(data)
 
             
             return super(FileField,self).to_internal_value(file_data)

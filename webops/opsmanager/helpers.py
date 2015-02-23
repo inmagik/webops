@@ -4,6 +4,7 @@ import json
 import os
 import zipfile
 import base64
+import mimetypes
 
 def zipdir(path, zip):
     for root, dirs, files in os.walk(path):

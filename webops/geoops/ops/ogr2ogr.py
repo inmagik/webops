@@ -79,12 +79,12 @@ class OgrOp(BaseOp):
         
         cmd = ["ogr2ogr"]
 
-        in_file = parameters.validated_data.pop("in_file")
+        in_file = parameters.pop("in_file")
         
         #appending params
-        for key in parameters.validated_data:
+        for key in parameters:
             cmd.append("-" + key)
-            cmd.append('%s' % str(parameters.validated_data[key]))
+            cmd.append('%s' % str(parameters[key]))
             
         #get it on the tmp
         #get it on the tmp
@@ -98,7 +98,7 @@ class OgrOp(BaseOp):
             tmp_src = self.get_main_src(tmp_srcs)
 
 
-        tmp_dst= tmp_src + self.get_dest_extension(parameters.validated_data)
+        tmp_dst= tmp_src + self.get_dest_extension(parameters)
 
         #appending args [files]
         cmd.append(tmp_dst)

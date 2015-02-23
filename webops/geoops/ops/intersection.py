@@ -49,8 +49,8 @@ class IntersectionOp(BaseOp):
 
     def process(self, parameters):
 
-        file1 = parameters.validated_data["in_file1"]
-        file2 = parameters.validated_data["in_file2"]
+        file1 = parameters["in_file1"]
+        file2 = parameters["in_file2"]
 
         #get it on the tmp
         tmp_src1 = tempfile.NamedTemporaryFile(suffix=file1.name, delete=False)

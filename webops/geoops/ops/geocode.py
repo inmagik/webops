@@ -39,7 +39,7 @@ class GeocodeOp(BaseOp):
     
     def process(self,  parameters):
         
-        in_file = parameters.validated_data.pop("in_file")
+        in_file = parameters.pop("in_file")
 
         #get a tmp filename for dst
         tmp_dst_file = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)

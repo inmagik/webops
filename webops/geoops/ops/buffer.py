@@ -47,7 +47,7 @@ class BufferOp(BaseOp):
 
     def process(self,  parameters):
         
-        in_file = parameters.validated_data.pop("in_file")
+        in_file = parameters.pop("in_file")
 
         #get it on the tmp
         tmp_src = tempfile.NamedTemporaryFile(suffix=in_file.name, delete=False)
@@ -55,10 +55,10 @@ class BufferOp(BaseOp):
         tmp_src.close()
         
         #get a tmp filename for dst
-        tmp_dst=  tmp_src.name + self.get_dest_extension(parameters.validated_data)
+        tmp_dst=  tmp_src.name + self.get_dest_extension(parameters)
         
         try:
-          msg = make_buffer(tmp_src.name, tmp_dst, parameters.validated_data['distance'])
+          msg = make_buffer(tmp_src.name, tmp_dst, parameters['distance'])
 
         except Exception, e:
           print e

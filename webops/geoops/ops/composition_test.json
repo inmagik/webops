@@ -1,0 +1,31 @@
+{ 
+
+    "ops" : [
+        {
+            "id" : "op1",
+            "op" : "ogr2ogr",
+            "partials" : {
+                "f" : "GeoJSON"
+            }
+        },
+        {
+            "id" : "op2",
+            "op" : "buffer",
+            "partials" : {
+                "distance" : 5
+            }
+        }
+    ],
+
+    "wires" : [
+        {
+            "from" : "op1",
+            "to" : "op2:in_file"
+        }
+    ]
+
+
+
+}
+
+

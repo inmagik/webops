@@ -1,11 +1,15 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
 from .views import OpsView
+from .composition import OpsGraphView
 from .register import _register
 
 
 urlpatterns = [
-    url(r'^$', OpsView.as_view(), name = "ops")
+    url(r'^graph/$', OpsGraphView.as_view(), name = "graph"),
+    url(r'^$', OpsView.as_view(), name = "ops"),
+
+    
 ]
 
 for o in _register.ops:

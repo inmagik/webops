@@ -26,7 +26,7 @@ class PDFToTextOp(BaseOp):
         
         cmd = ["pdftotext"]
     
-        in_file = parameters.validated_data["in_file"]
+        in_file = parameters["in_file"]
 
         #get it on the tmp
         tmp_src = write_to_temp(in_file)

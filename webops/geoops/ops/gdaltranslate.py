@@ -35,11 +35,11 @@ class GDALTranslateOp(BaseOp):
     def process(self, parameters):
         
         cmd = ["gdal_translate"]
-        in_file = parameters.validated_data.pop("in_file")
+        in_file = parameters.pop("in_file")
         #appending params
-        for key in parameters.validated_data:
+        for key in parameters:
             cmd.append("-" + key)
-            cmd.append('%s' % str(parameters.validated_data[key]))
+            cmd.append('%s' % str(parameters[key]))
 
         
         #get it on the tmp
@@ -47,7 +47,7 @@ class GDALTranslateOp(BaseOp):
         tmp_src.write(in_file.read())
         tmp_src.close()
         
-        tmp_dst=  tmp_src.name + self.get_dest_extension(parameters.validated_data)
+        tmp_dst=  tmp_src.name + self.get_dest_extension(parameters)
 
         #appending args [files]
         cmd.append(tmp_src.name)

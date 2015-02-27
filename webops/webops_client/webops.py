@@ -82,12 +82,12 @@ def get_parser(op_meta):
         p.add_argument(param, nargs=nargs)
     return p
 
-def run_op(host, op, op_args):          
+def run_op(host, op, op_args, outfile=None):          
     h = get_clean_host(host)
     #out = requests.post(h+"/ops/" + op + "/")
     meta = get_op_meta(host, op)
     #p = get_parser(meta)
-    print args
+    #print args
     #op_args = p.parse_args(args)
     #print op_args
 
@@ -107,16 +107,16 @@ def run_op(host, op, op_args):
         else:
             http_files[pname] = open(a[1], 'rb')
 
-    print http_params
+    #print http_params
     uri = h+"/ops/" + op + "/" 
     #headers = {'content-type': 'application/json'}
     out = requests.post(uri, data=http_params, files=http_files)
     if out.status_code == 200:
         j = out.json()
-        print j.keys()
-        fname = j['filename']
+        fname = outfile or j['filename']
         with open(fname, "wb") as outfile:
             outfile.write(base64.b64decode(j['data']))
+        log_message("%s done. output written to %s" % (op,fname))
 
     else:
         print out.json()
@@ -130,7 +130,7 @@ parser.add_argument('--host',  type=str, nargs='?',
                    help='webops host name and port or ip address and port')
 
 
-parser.add_argument('-o', metavar='O', type=str, nargs='?',
+parser.add_argument('--outfile',  type=str, nargs='?', default=None,
                    help='file output name')
 
 parser.add_argument('--list', action="store_true", default=False,
@@ -162,7 +162,7 @@ log_message("operating on %s" % host)
 
 if args.list:
     lst = get_ops_list(host)
-    print_op_list(lst)
+    print_ops_list(lst)
 
 
 
@@ -175,7 +175,7 @@ if args.meta:
 if args.run:
     if not args.op:
         exit_with_error("meta requires an op.")
-    run_op(host, args.op, args.opargs)
+    run_op(host, args.op, args.opargs, outfile=args.outfile)
 
 
 

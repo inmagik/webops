@@ -140,7 +140,45 @@ When POST is issued against an op, the server returns a json object containing t
 
     
 ## ADDING OPS
+
 New operations can be added by creating a `webops.py` file in your application.
 This file is responsibile for registering new operations.
 
 API will be documented soon ... for now look at the included `geoops` and `imageops` apps included in the project.
+
+
+
+### Creating an op
+
+Creating an op is done by subclassing the `BaseOp` class. Here is a piece of the declaration of the OgrOp
+
+    
+    class OgrOp(BaseOp):
+
+        op_name  = "ogr2ogr"
+        op_package = "geo"
+        op_description = "Use ogr2ogr to convert geographical vector file formats"
+        parameters_serializer = OgrParamsSerializer
+        ...
+
+
+
+### INPUT DESCRIPTORS
+### PROCESS FUNCTION
+### CHECK FUNCTION
+
+
+
+### Registering an op
+
+
+# SETTINGS
+
+WEBOPS_BREAK_ON_FAIL_TEST: if set to true, webserver won't start if any registration test fails
+
+
+
+
+
+
+

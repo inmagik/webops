@@ -43,6 +43,7 @@ INSTALLED_APPS = (
 
     'opsmanager',
     'geoops',
+    'opstest',
     'imageops',
     #'gitops',
     
@@ -113,3 +114,13 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 #this is the default
 WEBOPS_BREAK_ON_FAIL_TEST = False
+
+
+WEBOPS_OPS = [
+    { "op_class" : "opstest.ops.DummyOp"}, 
+    {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'convert_to_tiff.json')}
+]
+
+
+
+

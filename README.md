@@ -28,6 +28,116 @@ During developement point browser to:
     http://localhost:8000/static/www/index.html
 
 
+
+
+
+# REST API
+
+
+
+## OPS LIST
+	
+	GET /ops/
+	
+	HTTP 200 OK
+    Content-Type: application/json
+    Vary: Accept
+    Allow: GET, HEAD, OPTIONS
+
+    [
+        {
+            "abs_url": "http://localhost:8000/ops/ogr2ogr/", 
+            "parameters": {
+                "t_srs": {
+                    "required": false, 
+                    "type": "CharField", 
+                    "description": "Reproject/transform to this SRS on output", 
+                    "choices": null
+                }, 
+                "a_srs": {
+                    "required": false, 
+                    "type": "CharField", 
+                    "description": "Assign an input SRS", 
+                    "choices": null
+                }, 
+                "in_file": {
+                    "required": true, 
+                    "type": "FileField", 
+                    "description": "Input file", 
+                    "choices": null
+                }, 
+                "f": {
+                    "required": true, 
+                    "type": "ChoiceField", 
+                    "description": "Format name", 
+                    "choices": {
+                        "GeoJSON": "GeoJSON", 
+                        "CSV": "CSV", 
+                        "GML": "GML", 
+                        "GPX": "GPX", 
+                        "KML": "KML", 
+                        "SQLite": "SQLite", 
+                        "GMT": "GMT", 
+                        "GPKG": "GPKG", 
+                        "DXF": "DXF", 
+                        "Geoconcept": "Geoconcept", 
+                        "GeoRSS": "GeoRSS", 
+                        "PGDump": "PGDump", 
+                        "ODS": "ODS", 
+                        "XLSX": "XLSX", 
+                        "ESRI Shapefile": "ESRI Shapefile", 
+                        "MapInfo File": "MapInfo File"
+                    }
+                }
+            }, 
+            "package": "geo", 
+            "url": "ops/ogr2ogr", 
+            "description": "Use ogr2ogr to convert geographical vector file formats", 
+            "name": "ogr2ogr"
+        },
+        {
+            "abs_url": "http://localhost:8000/ops/pdftotext/", 
+            "parameters": {
+                "in_file": {
+                    "required": true, 
+                    "type": "FileField", 
+                    "description": "Input file", 
+                    "choices": null
+                }
+            }, 
+            "package": "image", 
+            "url": "ops/pdftotext", 
+            "description": "Extract text from pdf files", 
+            "name": "pdftotext"
+        }
+    ]
+
+
+
+## OP META
+
+	GET /webops/<op-name>/
+
+
+## RUNNING AN OP
+	
+	POST /webops/<op-name>/
+	
+When POST is issued against an op, the server returns a json object containing the output file as base64 encoded data.
+
+    {
+        data : "...",
+        filename : "a.jpg",
+        path : ".." 
+    }
+
+    data: contains the base64 encoded file
+    filename: filename proposed
+    path: the original path on server (will be changed soon to something more useful)
+
+
+# Django API
+
     
 ## ADDING OPS
 New operations can be added by creating a `webops.py` file in your application.

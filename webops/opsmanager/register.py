@@ -6,10 +6,14 @@ import warnings
 import sys
 import imp
 import importlib
-
+import json
+import os
+from opsmanager.composition import compose_graph
 
 
 WEBOPS_BREAK_ON_FAIL_TEST = getattr(settings, "WEBOPS_BREAK_ON_FAIL_TEST", False)
+WEBOPS_OPS = getattr(settings, "WEBOPS_OPS", None)
+
 
 class Register(object):
 
@@ -41,8 +45,7 @@ _register = Register()
 
 loaded = False
 if not loaded:
-       
-
+    
     for app in settings.INSTALLED_APPS:
         # For each app, we need to look for an webops.py inside that app's
         # package. We can't use os.path here -- recall that modules may be
@@ -70,7 +73,24 @@ if not loaded:
         # Step 3: import the app's admin file. If this has errors we want them
         # to bubble up.
         importlib.import_module("%s.webops" % app)
-    # autodiscover was successful, reset loading flag.
+        # autodiscover was successful, reset loading flag.
+    
     loaded = True
+
+    for item in WEBOPS_OPS:
+            if 'op_class' in item:
+                pieces = item['op_class'].split(".")
+                cls = pieces[-1]
+                module = ".".join(pieces[:-1])
+                m = importlib.import_module(module)
+                kls = getattr(m, cls)
+                _register.register_op(kls)
+
+            elif 'op_graph' in item:
+                with open(item['op_graph']) as t:
+                    data = json.load(t)
+                    graph = compose_graph(data, _register)
+                    _register.register_op(graph)
+
 
 

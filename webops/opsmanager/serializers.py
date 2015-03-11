@@ -81,4 +81,9 @@ class FileField(serializers.FileField):
             return super(FileField,self).to_internal_value(data)
 
     
+
+
+class SingleFileParamsSerializer(serializers.Serializer):
+    in_file = FileField(help_text='Input file')
+    
     

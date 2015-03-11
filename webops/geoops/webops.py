@@ -19,5 +19,5 @@ import os
 fpath = os.path.join(os.path.dirname(__file__), "ops/composition_test.json")
 with open(fpath) as t:
     data = json.load(t)
-graph_test = compose_graph(data)
+graph_test = compose_graph(data, _register)
 _register.register_op(graph_test)

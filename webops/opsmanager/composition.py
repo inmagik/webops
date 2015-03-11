@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import serializers
 import copy
-from .register import _register
 from .ops import BaseOp
 from .helpers import export_file
 
@@ -33,7 +32,7 @@ def create_partial_op(name, op_class, partials):
 
 
 
-def compose_graph(data):
+def compose_graph(data, _register):
     """
     should return a new composed op...
     """

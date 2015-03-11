@@ -1,0 +1,19 @@
+{ 
+    "op_name" : "Convert to TIFF",
+    "op_description" : "Fixed format convert",
+    "ops" : [
+        {
+            "id" : "op1",
+            "op" : "convert",
+            "partials" : {
+                "f" : "tiff"
+            }
+        }
+    ],
+
+    "wires" : [
+    ]
+
+}
+
+

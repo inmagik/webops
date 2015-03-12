@@ -126,7 +126,11 @@ def compose_graph(data, _register):
                 for dep in deps[op]:
                     if dep["name"] not in outputs:
                         out_file = process_op(dep["name"])
-                        outputs[dep["name"]] = export_file(out_file['filename'])                        
+                        x = getattr(partial_ops[op], "output_descriptor", None)
+                        if x is not None:
+                            outputs[dep["name"]] = out_file    
+                        else:
+                            outputs[dep["name"]] = export_file(out_file['filename'])                        
                         print "ook", dep
                         
                     p[dep["target"]] = outputs[dep["name"]]
@@ -146,13 +150,14 @@ def compose_graph(data, _register):
 
     #let's build a new serializer to validate input
     new_parameters_serializer = type("GraphOpSerializer", (serializers.Serializer,), copy.deepcopy(ops_inputs))
-    
+    new_output_descriptor = getattr(partial_ops[output_op], "output_descriptor", None)
+
     #finally the composed operation
     graph_op = type("GraphOp", 
         (BaseOp,),
         {"process": new_process, "parameters_serializer" : new_parameters_serializer,
         "op_id" : op_id,
-        "op_name" : op_name, "op_description": op_description }
+        "op_name" : op_name, "op_description": op_description, "output_descriptor" : new_output_descriptor }
     )
     
     return graph_op

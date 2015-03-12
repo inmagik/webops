@@ -47,6 +47,24 @@ class BaseOp(APIView):
         return meta
 
     
+    def get_result(self, parameters):
+        od = getattr(self,"output_descriptor" , None)
+        if not od or od == 'FileData':
+            try:
+                out_file = self.process(parameters)
+                out_response = export_file(out_file['filename'])
+            except Exception, e:
+                raise APIException(detail=str(e))
+        else:
+            try:
+                out_data = self.process(parameters)
+                out_response = self.output_descriptor.to_representation(out_data)
+            except Exception, e:
+                raise APIException(detail=str(e))
+        return out_response
+
+
+    
     def get(self, request, format=None):
         return Response(self.get_meta(request))
 
@@ -55,28 +73,11 @@ class BaseOp(APIView):
         if getattr(self,"parameters_serializer" , None):
             parameters = self.parameters_serializer(data=request.data)
             parameters.is_valid(raise_exception=True)
+            params = parameters.validated_data
         else:
-            parameters = {}
+            params = {}
 
         
-        if not self.output_descriptor:
-            try:
-                out_file = self.process(parameters.validated_data)
-                #print out_file
-                out_response = export_file(out_file['filename'])
-            except Exception, e:
-                #print str(e)
-                #raise e
-
-                raise APIException(detail=str(e))
-        else:
-            try:
-                out_data = self.process(parameters.validated_data)
-                #print out_file
-                out_response = self.output_descriptor.to_representation(out_data)
-            except Exception, e:
-                raise APIException(detail=str(e))
-            
-        
+        out_response = self.get_result(params)
         return Response(out_response)
 

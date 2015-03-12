@@ -1,0 +1,28 @@
+{ 
+    "op_name" : "Sum and sum to 10",
+    "op_id" : "com.inmagik.sumandsumto10",
+    "op_description" : "Sum experiment. Sum two numbers, sum 10, return result",
+    "ops" : [
+        {
+            "label" : "op1",
+            "op" : "com.inmagik.opstest-sum"
+        },
+        {
+            "label" : "op2",
+            "op" : "com.inmagik.opstest-sum",
+            "partials" : {
+                "b" : 10
+            }
+        }
+    ],
+
+    "wires" : [
+        {
+            "from" : "op1",
+            "to" : "op2:a"
+        }
+    ]
+
+}
+
+

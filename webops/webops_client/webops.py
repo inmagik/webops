@@ -42,7 +42,7 @@ def get_ops_list(host):
 
 def print_ops_list(ops):
     for x in ops:
-        print x['name']
+        print x['id']
         print x['description']
         print
 
@@ -113,10 +113,13 @@ def run_op(host, op, op_args, outfile=None):
     out = requests.post(uri, data=http_params, files=http_files)
     if out.status_code == 200:
         j = out.json()
-        fname = outfile or j['filename']
-        with open(fname, "wb") as outfile:
-            outfile.write(base64.b64decode(j['data']))
-        log_message("%s done. output written to %s" % (op,fname))
+        if meta["output_descriptor"] == 'FileData':
+            fname = outfile or j['filename']
+            with open(fname, "wb") as outfile:
+                outfile.write(base64.b64decode(j['data']))
+            log_message("%s done. output written to %s" % (op,fname))
+        else:
+            log_message("%s done. Output:\t%s" % (op,str(j)))
 
     else:
         print out.json()

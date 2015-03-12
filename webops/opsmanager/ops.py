@@ -38,6 +38,11 @@ class BaseOp(APIView):
         meta['parameters'] = self.get_parameters_meta()
         meta['abs_url'] = request.build_absolute_uri(self.op_id + "/")
         meta['url'] = BASE_OPS_URL + '/' + self.op_id 
+        output_descriptor = getattr(self, 'output_descriptor', None)
+        if output_descriptor:
+            meta['output_descriptor'] = self.output_descriptor.__class__.__name__
+        else:
+            meta['output_descriptor'] = 'FileData'
 
         return meta
 
@@ -54,15 +59,23 @@ class BaseOp(APIView):
             parameters = {}
 
         
-        try:
-            out_file = self.process(parameters.validated_data)
-            #print out_file
-            out_response = export_file(out_file['filename'])
-        except Exception, e:
-            #print str(e)
-            #raise e
+        if not self.output_descriptor:
+            try:
+                out_file = self.process(parameters.validated_data)
+                #print out_file
+                out_response = export_file(out_file['filename'])
+            except Exception, e:
+                #print str(e)
+                #raise e
 
-            raise APIException(detail=str(e))
+                raise APIException(detail=str(e))
+        else:
+            try:
+                out_data = self.process(parameters.validated_data)
+                #print out_file
+                out_response = self.output_descriptor.to_representation(out_data)
+            except Exception, e:
+                raise APIException(detail=str(e))
             
         
         return Response(out_response)

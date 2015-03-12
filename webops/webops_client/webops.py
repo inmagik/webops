@@ -55,6 +55,7 @@ def get_op_meta(host, op):
 
 def print_op_meta(x):
     print
+    print x['id']
     print x['name']
     print x['description']
     print    

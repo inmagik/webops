@@ -19,11 +19,13 @@ def export_file(path):
         data = base64.b64encode(f.read())
 
     filename = os.path.basename(path)
+    mimes = mimetypes.guess_type(path)
     
     return { 
                 'data' : data, 
                 'path' : path,
-                'filename' : filename
+                'filename' : filename,
+                'mimetype' : mimes[0]
             }
 
 

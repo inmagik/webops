@@ -31,7 +31,7 @@ class SumOp(BaseOp):
     op_id = "com.inmagik.opstest-sum"
     op_name  = "sum numbers"
     op_package = "numbers"
-    op_description = "Sums to numbers"
+    op_description = "Sums two numbers"
     parameters_serializer = SupOpInputSerializer
     output_descriptor = serializers.FloatField()
 

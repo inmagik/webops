@@ -49,12 +49,12 @@ angular.module("WebOps", ['ui.router', 'restangular', 'angularFileUpload'])
     })
     
     .state('home.op', {
-      url: "/op/:opName",
+      url: "/op/:opId",
       templateUrl: "templates/op.html",
       controller  :'OpCtrl',
       resolve : {
         op : function(ops, $stateParams){
-          return _.find(ops, { name : $stateParams.opName })
+          return _.find(ops, { id : $stateParams.opId })
         }
       }
       

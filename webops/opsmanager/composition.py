@@ -60,11 +60,11 @@ def compose_graph(data, _register):
             partial_ops[op_label] = base_op
 
     all_ops = partial_ops.keys()
-    for op_id in all_ops:
+    for op_label in all_ops:
         ser = partial_ops[op_label].parameters_serializer()
         fields = ser.get_fields()
         for field in fields:
-            fieldname = "%s:%s" % (op_id, field)
+            fieldname = "%s:%s" % (op_label, field)
             ops_inputs[fieldname] = fields[field]
 
 

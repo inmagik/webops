@@ -13,7 +13,7 @@ class ConvertParametersSerializer(serializers.Serializer):
 
 
 class PDFToTextOp(BaseOp):
-
+    op_id = "com.inmagik.pdftotext"
     op_name  = "pdftotext"
     op_package = "image"
     op_description = "Extract text from pdf files"

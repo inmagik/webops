@@ -23,7 +23,7 @@ class ConvertParamsSerializer(serializers.Serializer):
 
 
 class ConvertOp(BaseOp):
-
+    op_id = "com.inmagik.convert"
     op_name  = "convert"
     op_package = "image"
     op_description = "Use imagemagik convert to convert image file formats"

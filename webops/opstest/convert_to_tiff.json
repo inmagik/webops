@@ -1,10 +1,11 @@
 { 
     "op_name" : "Convert to TIFF",
+    "op_id" : "com.inmagik.convertotiff",
     "op_description" : "Fixed format convert",
     "ops" : [
         {
-            "id" : "op1",
-            "op" : "convert",
+            "label" : "op1",
+            "op" : "com.inmagik.convert",
             "partials" : {
                 "f" : "tiff"
             }

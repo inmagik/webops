@@ -31,10 +31,10 @@ class Register(object):
             if(WEBOPS_BREAK_ON_FAIL_TEST):
                 raise
             #logger.error("Op registration failed, skipping %s" % op.op_name)
-            print >>sys.stderr, "!! WEBOPS: Op registration failed, skipping %s" % op.op_name
+            print >>sys.stderr, "!! WEBOPS: Op registration failed, skipping %s" % op.op_id
             return                
 
-        self.ops[op.op_name] = op
+        self.ops[op.op_id] = op
     
     def deregister_op(self, op_name):
         pass

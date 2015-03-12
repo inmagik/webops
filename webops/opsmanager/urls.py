@@ -14,7 +14,7 @@ urlpatterns = [
 
 for o in _register.ops:
     op = _register.ops[o]
-    urlpatterns.append(url(r'^%s/$' % op.op_name, op.as_view(), name = '%s' % op.op_name))
+    urlpatterns.append(url(r'^%s/$' % op.op_id, op.as_view(), name = '%s' % op.op_id))
     #TODO (maybe): register with router instead?
     #something like: router.register(, op, base_name = op.op_name)
 

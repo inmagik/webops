@@ -35,7 +35,7 @@ class BufferParamsSerializer(serializers.Serializer):
     
 
 class BufferOp(BaseOp):
-
+    op_id = "com.inmagik.buffer"
     op_name  = "buffer"
     op_package = "geo"
     op_description = "Create buffers from geometries"

@@ -29,7 +29,7 @@ class GeocodeParamsSerializer(serializers.Serializer):
     
 
 class GeocodeOp(BaseOp):
-
+    op_id = "com.inmagik.geocode"
     op_name  = "geocode"
     op_package = "geo"
     op_description = "Takes a text file with addresses and returns a csv with geolocated addresses"

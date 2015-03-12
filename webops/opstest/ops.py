@@ -4,6 +4,7 @@ from opsmanager.serializers import SingleFileParamsSerializer
 
 class DummyOp(BaseOp):
 
+    op_id = "com.inmagik.opstest-dummyop"
     op_name  = "dummy"
     op_package = "files"
     op_description = "Takes a file and sends it back"

@@ -19,7 +19,7 @@ class TranslateParamsSerializer(serializers.Serializer):
     
 
 class GDALTranslateOp(BaseOp):
-
+    op_id = "com.inmagik.gdaltranslate"
     op_name  = "gdal_translate"
     op_package = "geo"
     op_description = "Use gdal_translate to convert geographical raster file formats"

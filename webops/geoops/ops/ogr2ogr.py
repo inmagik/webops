@@ -26,7 +26,7 @@ class OgrParamsSerializer(serializers.Serializer):
     
 
 class OgrOp(BaseOp):
-
+    op_id = "com.inmagik.ogr2ogr"
     op_name  = "ogr2ogr"
     op_package = "geo"
     op_description = "Use ogr2ogr to convert geographical vector file formats"

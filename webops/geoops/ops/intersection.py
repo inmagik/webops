@@ -38,7 +38,7 @@ class IntersectionParametersSerializer(serializers.Serializer):
 
 
 class IntersectionOp(BaseOp):
-
+    op_id = "com.inmagik.geojsonintersection"
     op_name  = "Intersection"
     op_package = "geo"
     op_description = "Create intersection from two geojson"

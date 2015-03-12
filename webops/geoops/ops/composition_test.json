@@ -1,21 +1,22 @@
 { 
     "op_name" : "GeoJSON then buffer then KML",
+    "op_id" : "com.inmagik.geojson-buffer-kml",
     "op_description" : "Composition test between ogr2ogr and buffer!",
     "ops" : [
         {
-            "id" : "op1",
-            "op" : "ogr2ogr",
+            "label" : "op1",
+            "op" : "com.inmagik.ogr2ogr",
             "partials" : {
                 "f" : "GeoJSON"
             }
         },
         {
-            "id" : "op2",
-            "op" : "buffer"
+            "label" : "op2",
+            "op" : "com.inmagik.buffer"
         },
         {
-            "id" : "op3",
-            "op" : "ogr2ogr",
+            "label" : "op3",
+            "op" : "com.inmagik.ogr2ogr",
             "partials" : {
                 "f" : "KML"
             }

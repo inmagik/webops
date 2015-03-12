@@ -34,10 +34,10 @@ class BaseOp(APIView):
     
     @classmethod
     def get_meta(self, request):
-        meta = { 'name' : self.op_name, 'description' : self.op_description , 'package':self.op_package}
+        meta = { 'id' : self.op_id, 'name' : self.op_name, 'description' : self.op_description , 'package':self.op_package}
         meta['parameters'] = self.get_parameters_meta()
-        meta['abs_url'] = request.build_absolute_uri(self.op_name + "/")
-        meta['url'] = BASE_OPS_URL + '/' + self.op_name 
+        meta['abs_url'] = request.build_absolute_uri(self.op_id + "/")
+        meta['url'] = BASE_OPS_URL + '/' + self.op_id 
 
         return meta
 

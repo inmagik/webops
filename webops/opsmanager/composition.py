@@ -42,6 +42,7 @@ def compose_graph(data, _register):
     ops_inputs = {}
 
     #TODO:PASS IN RANDOM NAME
+    op_id = data["op_id"]
     op_name = data["op_name"] or "GraphOp"
     op_description = data["op_description"] or "GraphOp op_description"
 
@@ -49,18 +50,18 @@ def compose_graph(data, _register):
     for op in ops:
         #print op
         base_op = _register.ops[op["op"]]
-        op_id = str(op["id"])
+        op_label = str(op["label"])
         if "partials" in op:
-            o2 = create_partial_op (op_id, base_op, op["partials"])
-            partial_ops[op_id] = o2
-            partials[op_id] = op["partials"]
+            o2 = create_partial_op (op_label, base_op, op["partials"])
+            partial_ops[op_label] = o2
+            partials[op_label] = op["partials"]
             
         else:
-            partial_ops[op_id] = base_op
+            partial_ops[op_label] = base_op
 
     all_ops = partial_ops.keys()
     for op_id in all_ops:
-        ser = partial_ops[op_id].parameters_serializer()
+        ser = partial_ops[op_label].parameters_serializer()
         fields = ser.get_fields()
         for field in fields:
             fieldname = "%s:%s" % (op_id, field)
@@ -150,6 +151,7 @@ def compose_graph(data, _register):
     graph_op = type("GraphOp", 
         (BaseOp,),
         {"process": new_process, "parameters_serializer" : new_parameters_serializer,
+        "op_id" : op_id,
         "op_name" : op_name, "op_description": op_description }
     )
     

@@ -38,3 +38,22 @@ class SumOp(BaseOp):
     
     def process(self,  parameters):
         return parameters['a'] + parameters['b']
+
+
+class BinaryNumberInputSerializer(serializers.Serializer):
+    a = serializers.FloatField()
+    b = serializers.FloatField()
+
+
+import operator
+from opsmanager.wrappers import wrap_function
+from opsmanager.register import _register
+wrapped = [operator.add, operator.sub, operator.mul, operator.div, operator.pow]
+for w in wrapped:
+    x = wrap_function("com.inmagik."+w.__name__, w, BinaryNumberInputSerializer, serializers.FloatField())
+    _register.register_op(x)
+    print x
+
+
+
+

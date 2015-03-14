@@ -1,0 +1,35 @@
+{ 
+    "op_name" : "Sum and sum to 10 again",
+    "op_id" : "com.inmagik.sumandsumto10again",
+    "op_description" : "two com.inmagik.sumandsumto10 ops combined! Sum 10 to two numbers and sum results" ,
+    "ops" : [
+        {
+            "label" : "op1",
+            "op" : "com.inmagik.sumandsumto10",
+            "partials" : { "op1:a": 10 }
+        },
+        {
+            "label" : "op2",
+            "op" : "com.inmagik.sumandsumto10",
+            "partials" : { "op1:a": 10 }
+        },
+        {
+            "label" : "op3",
+            "op" : "com.inmagik.opstest-sum"
+        }
+    ],
+
+    "wires" : [
+        {
+            "from" : "op1",
+            "to" : "op3:a"
+        },
+        {
+            "from" : "op2",
+            "to" : "op3:b"
+        }
+    ]
+
+}
+
+

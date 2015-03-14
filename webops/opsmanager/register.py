@@ -120,6 +120,7 @@ class Register(object):
         # it should:
         # - remap serializer inputs
         # - combine process functions.
+
         def new_process(self, parameters):
             outputs = { }
 
@@ -178,7 +179,15 @@ class Register(object):
         return graph_op
 
 
+
+# register instance
 _register = Register()
+
+
+
+
+### automatic discovering of webops.py file inside apps.
+### similar to what Django admin does. 
 
 
 loaded = False

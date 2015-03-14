@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework.exceptions import APIException
 from .helpers import export_file
+from django.conf import settings
+import traceback
 
 BASE_OPS_URL = 'ops'
 
@@ -54,13 +56,21 @@ class BaseOp(APIView):
                 out_file = self.process(parameters)
                 out_response = export_file(out_file['filename'])
             except Exception, e:
-                raise APIException(detail=str(e))
+                if settings.DEBUG:
+                    tb = traceback.format_exc()
+                else:
+                    tb = str(e)
+                raise APIException(detail=tb)
         else:
             try:
                 out_data = self.process(parameters)
                 out_response = self.output_descriptor.to_representation(out_data)
             except Exception, e:
-                raise APIException(detail=str(e))
+                if settings.DEBUG:
+                    tb = traceback.format_exc()
+                else:
+                    tb = str(e)
+                raise APIException(detail=tb)
         return out_response
 
 

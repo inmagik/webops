@@ -119,7 +119,8 @@ WEBOPS_OPS = [
     { "op_class" : "opstest.ops.DummyOp"}, 
     { "op_class" : "opstest.ops.SumOp"}, 
     {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'convert_to_tiff.json')},
-    {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'sum_and_sum10.json')}
+    {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'sum_and_sum10.json')},
+    {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'sum_and_sum10_again.json')}
 ]
 
 

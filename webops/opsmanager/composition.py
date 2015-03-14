@@ -8,6 +8,7 @@ from .ops import BaseOp
 from .helpers import export_file
 
 def create_partial_serializer(name, base_serializer_class, partials):
+    
     ser = base_serializer_class()
     fields = ser.get_fields()
     for p in partials:
@@ -19,7 +20,7 @@ def create_partial_serializer(name, base_serializer_class, partials):
 
 
 def create_partial_op(name, op_class, partials):
-
+    
     def process_with_partials(self, parameters):
         parameters.update(partials)
         return op_class.process(self, parameters)
@@ -64,7 +65,8 @@ def compose_graph(data, _register):
         ser = partial_ops[op_label].parameters_serializer()
         fields = ser.get_fields()
         for field in fields:
-            fieldname = "%s:%s" % (op_label, field)
+            field_clean = field.replace(":", "-")
+            fieldname = "%s:%s" % (op_label, field_clean)
             ops_inputs[fieldname] = fields[field]
 
 
@@ -111,11 +113,13 @@ def compose_graph(data, _register):
         outputs = { }
 
         def remap_parameters(p2, op_id):
+
             params = {}
             ins = ops_inputs.keys()
             for fieldname in ins:
                 op, name = fieldname.split(":")
                 if fieldname in p2:
+                    name = name.replace("-", ":")
                     params[name] = p2[fieldname]
             return params
 
@@ -147,7 +151,7 @@ def compose_graph(data, _register):
             return out
         
         return process_op(output_op)
-
+    
     #let's build a new serializer to validate input
     new_parameters_serializer = type("GraphOpSerializer", (serializers.Serializer,), copy.deepcopy(ops_inputs))
     new_output_descriptor = getattr(partial_ops[output_op], "output_descriptor", None)

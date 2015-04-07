@@ -1,10 +1,5 @@
 angular.module("WebOps")
 .controller('AppCtrl', function ($scope) {
-
-    $scope.globalMethod = function(){
-        console.log(1);
-    };
-
     
     
 })
@@ -19,68 +14,28 @@ angular.module("WebOps")
 })
 
 
-.controller('OpCtrl', function ($scope, Restangular, op, $http, $timeout, $q) {
-    console.log(op)    
+.controller('OpCtrl', function ($scope, Restangular, op, $http, $timeout, $q, webopsHelpers) {
+
     $scope.data = {
         currentOp : op,
-        fileParams : {},
-        paramsRequired : {},
-        paramsOptional : {},
         processing : false,
         result : null,
         errors : null
     };
 
-    _.each(op.parameters, function(p, pname){
-        
+    var info = webopsHelpers.getParamsInfo(op);
+    angular.extend($scope.data, info);
 
-        if(p.type == 'FileField'){
-            $scope.data.fileParams[pname] = p;
-        } else {
-            if(p.required){
-                $scope.data.paramsRequired[pname] = p;
-            } else {
-                $scope.data.paramsOptional[pname] = p;
-            }
-        };
-    })
 
     $scope.paramsData = {};
     $scope.filesData = {};
-    $scope.filesMeta = {};
     $scope.filesUrls = { };
 
     $scope.readFile = function(name, $files){
         $timeout(function(){
-            $scope.filesMeta[name] = $files[0];
             $scope.filesData[name] = $files[0];
         });
     };
-
-
-
-    var loadFile = function(key, fileMeta){
-        var deferred = $q.defer();
-        console.log(1, fileMeta)
-        var reader = new FileReader()
-        reader.onload = function(e){
-            console.log("e",reader.result);
-            var out = {};
-            out[key] = { 
-                'data' : reader.result,
-                'filename' : fileMeta.name,
-                'mime' : fileMeta.type
-            }
-            deferred.resolve(out);
-        };
-        reader.onerror = function(err){
-            deferred.reject(err);
-        };
-        reader.readAsDataURL(fileMeta);
-        return deferred.promise;
-    }
-
- 
     
     /* this one uses json encoding */
     $scope.launch = function(){
@@ -88,33 +43,13 @@ angular.module("WebOps")
 
         var jsond = {};
         var fileReads = [];
+        $scope.data.processing = true;
 
-        $scope.data.processing =true;
-
-        _.each($scope.paramsData, function(value, key){
-            jsond[key] = value;
-        })
-        
-        _.each($scope.filesData, function(value, key){
-        
-            fileReads.push(loadFile(key, value))    
-        })
-
-        _.each($scope.filesUrls, function(value, key){
-        
-            jsond[key] = { 'data' : value};
-        })
-
-        $q.all(fileReads)
-        .then(function(results){
-            _.each(results, function(result){
-                angular.extend(jsond, result)
-            });
-            console.log("hs", jsond)
+        webopsHelpers.prepareParams($scope.paramsData, $scope.filesData, $scope.filesUrls)
+        .then(function(jsond){
 
             $http.post(op.abs_url, jsond, {timeout:300000})
             .then(function(resp){
-                console.log("wow!", resp);
                 $timeout(function(){
                     $scope.data.errors = null;
                     $scope.data.result = resp.data;
@@ -203,7 +138,6 @@ angular.module("WebOps")
     };
 
     $scope.downloadFile = function(){
-        console.log(1, $scope.data.result)
         blobUtil.base64StringToBlob($scope.data.result.data)
           .then(function(blob){
             saveAs(blob, $scope.data.result.filename);  

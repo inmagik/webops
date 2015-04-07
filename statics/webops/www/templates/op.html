@@ -60,7 +60,7 @@
                 </div>
                 <div class="text-center" ng-if="filesData[name]">
                     <div class="dropbox">
-                        {{name}}: <b>{{filesMeta[name].name}}</b>
+                        {{name}}: <b>{{filesData[name].name}}</b>
                     </div>
                     <button class="btn btn-danger" ng-click="clearFile(name)" ng-disabled="data.processing">CLEAR</button>
                 </div>

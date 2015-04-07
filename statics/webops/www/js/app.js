@@ -1,5 +1,5 @@
 
-angular.module("WebOps", ['ui.router', 'restangular', 'angularFileUpload'])
+angular.module("WebOps", ['ui.router', 'restangular', 'angularFileUpload', 'angularWebops'])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider, RestangularProvider){
 

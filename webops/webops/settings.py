@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'rest_framework',
     'debug_toolbar',
+    'django_rq',
 
     'opsmanager',
     'geoops',
@@ -124,5 +125,12 @@ WEBOPS_OPS = [
 ]
 
 
-
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0
+    }
+    
+}
 

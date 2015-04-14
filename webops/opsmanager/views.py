@@ -5,6 +5,7 @@ from rest_framework import status
 
 from .register import _register
 import django_rq
+from .ops import compose_graph
 
 class OpsView(APIView):
     """
@@ -42,4 +43,18 @@ class AsyncResultView(APIView):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+#todo: move this away..
+
+class OpsGraphView(APIView):
+    """
+    
+    """
+    #authentication_classes = (authentication.TokenAuthentication,)
+    #permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        out = {}
+        op = compose_graph(request.DATA)
+        return Response(out)
+
 

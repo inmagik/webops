@@ -16,11 +16,17 @@ import register
 WEBOPS_ALLOW_ASYNC = getattr(settings, "WEBOPS_ALLOW_ASYNC", False)
 
 
-def get_async_process(op_id, params):
-    klass = register._register.ops[op_id]
-    out = klass().process(params)
-    return out
+def get_async_process(op_id, graph_data, params):
+    if op_id and not graph_data:
+        klass = register._register.ops[op_id]
+        return klass().process(params)
 
+    if graph_data:
+        klass = compose_graph(graph_data)
+        return klass().process(params)
+
+
+    raise ValueError("get_async_process needs an op_id or a graph")
 
 
 BASE_OPS_URL = 'ops'
@@ -73,7 +79,8 @@ class BaseOp(APIView):
 
         try:
             queue =  django_rq.get_queue()
-            job = queue.enqueue(get_async_process, self.op_id, parameters)
+            graph_data = getattr(self, "graph_data", None)
+            job = queue.enqueue(get_async_process, self.op_id, graph_data, parameters)
             return { "job_id" : job.id }
         
         except Exception, e:
@@ -267,7 +274,8 @@ def compose_graph(register, data):
         (BaseOp,),
         {"process": new_process, "parameters_serializer" : new_parameters_serializer,
         "op_id" : op_id,
-        "op_name" : op_name, "op_description": op_description, "output_descriptor" : new_output_descriptor }
+        "op_name" : op_name, "op_description": op_description, "output_descriptor" : new_output_descriptor,
+        "graph_data" : data }
     )
     
     return graph_op

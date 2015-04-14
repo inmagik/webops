@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from rest_framework import routers
-from .views import OpsView, AsyncResultView
-from .composition import OpsGraphView
+from .views import OpsView, AsyncResultView, OpsGraphView
 from .register import _register
 
 urlpatterns = [

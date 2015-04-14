@@ -35,20 +35,6 @@ def create_partial_op(name, op_class, partials):
 
 
 
-#todo: move this away..
-
-class OpsGraphView(APIView):
-    """
-    
-    """
-    #authentication_classes = (authentication.TokenAuthentication,)
-    #permission_classes = (permissions.AllowAny,)
-
-    def post(self, request, format=None):
-        out = {}
-        op = compose_graph(request.DATA)
-        return Response(out)
-
 
     
 

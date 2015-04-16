@@ -1,4 +1,4 @@
-angular.module('angularWebops', [])
+angular.module('webops-angular', [])
 .factory('webopsHelpers', ['$q', function ($q) {
     
     var svc = {};

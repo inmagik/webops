@@ -1,6 +1,7 @@
-#WEBOPS
-## WHAT'S THIS?
-It's cloud based service that provides access to running remote "operations" on the cloud.
+#WEBOPS -- example site
+
+Cloud based service that provides access to running remote "operations" on the cloud.
+
 It provides:
 * REST api to get metadata about accessible operations and endpoints to run them (based ond Django)
 * a web interface to configure and run operations (based on Angular)

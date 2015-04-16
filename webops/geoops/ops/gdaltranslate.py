@@ -2,8 +2,8 @@ import tempfile
 import subprocess
 import datetime
 
-from opsmanager.ops import BaseOp
-from opsmanager.serializers import FileField 
+from webops_django.ops import BaseOp
+from webops_django.serializers import FileField 
 
 
 from rest_framework import serializers

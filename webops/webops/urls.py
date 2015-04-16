@@ -5,7 +5,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = patterns('',
     # Examples:
     #url(r'^ops/$', OpsView.as_view(), name='ops'),
-    url(r'^ops/', include('opsmanager.urls')),
+    url(r'^ops/', include('webops_django.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 

@@ -42,10 +42,10 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_rq',
 
-    'opsmanager',
+    'webops_django',
     'geoops',
-    'opstest',
-    'imageops',
+    #'opstest',
+    #'imageops',
     #'gitops',
     
     
@@ -115,7 +115,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 #this is the default
 WEBOPS_BREAK_ON_FAIL_TEST = False
-
+"""
 WEBOPS_OPS = [
     { "op_class" : "opstest.ops.DummyOp"}, 
     { "op_class" : "opstest.ops.SumOp"}, 
@@ -123,7 +123,7 @@ WEBOPS_OPS = [
     {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'sum_and_sum10.json')},
     {'op_graph' : os.path.join(BASE_DIR, 'opstest', 'sum_and_sum10_again.json')}
 ]
-
+"""
 
 RQ_QUEUES = {
     'default': {

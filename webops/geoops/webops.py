@@ -1,8 +1,8 @@
 import json
 import os
 from django.apps import AppConfig
-from opsmanager.register import _register
-from opsmanager.ops import compose_graph
+from webops_django.register import _register
+from webops_django.ops import compose_graph
 from .ops.ogr2ogr import OgrOp
 from .ops.buffer import BufferOp
 from .ops.intersection import IntersectionOp

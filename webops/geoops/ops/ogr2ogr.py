@@ -6,9 +6,9 @@ import mimetypes
 import glob
 import shutil
 
-from opsmanager.ops import BaseOp
-from opsmanager.helpers import write_to_temp, unzip_to_temp, zip_to_temp
-from opsmanager.serializers import FileField 
+from webops_django.ops import BaseOp
+from webops_django.helpers import write_to_temp, unzip_to_temp, zip_to_temp
+from webops_django.serializers import FileField 
 
 from rest_framework import serializers
 from rest_framework.exceptions import APIException

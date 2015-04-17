@@ -16,9 +16,9 @@ SUPPORTED_IMAGE_FORMATS = get_imagemagik_formats()
 class ConvertParamsSerializer(serializers.Serializer):
     in_file = FileField(help_text='Input file')
     #should be choiceField!
-    #f = serializers.CharField(help_text='Target extension')
+    f = serializers.CharField(help_text='Target extension')
     #choices=OGR_SUPPORTED_FORMATS
-    f = serializers.ChoiceField(help_text='Target extension', choices=SUPPORTED_IMAGE_FORMATS)
+    #f = serializers.ChoiceField(help_text='Target extension', choices=SUPPORTED_IMAGE_FORMATS)
     
 
 

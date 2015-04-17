@@ -45,7 +45,7 @@ INSTALLED_APPS = (
     'webops_django',
     'geoops',
     #'opstest',
-    #'imageops',
+    'imageops',
     #'gitops',
     
     

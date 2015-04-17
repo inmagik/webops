@@ -1,12 +1,12 @@
 import tempfile
 import subprocess
 import datetime
-from opsmanager.ops import BaseOp
-from opsmanager.helpers import write_to_temp
+from webops_django.ops import BaseOp
+from webops_django.helpers import write_to_temp
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 
-from opsmanager.serializers import FileField 
+from webops_django.serializers import FileField 
 
 class ConvertParametersSerializer(serializers.Serializer):
     in_file = FileField(help_text='Input file')

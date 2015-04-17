@@ -1,4 +1,4 @@
-from opsmanager.register import _register
+from webops_django.register import _register
 from .ops.convert import ConvertOp
 from .ops.pdftotext import PDFToTextOp
  

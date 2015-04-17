@@ -1,15 +1,26 @@
 #WEBOPS -- example site
 
-Cloud based service that provides access to running remote "operations" on the cloud.
+Webops aims to be a cloud based platform that provides access to running remote "operations" on the cloud.
 
 It provides:
-* REST api to get metadata about accessible operations and endpoints to run them (based ond Django)
-* a web interface to configure and run operations (based on Angular)
-* a command line interface to access API from the bash (not here yet)
-* libs for accessing the API from different languages via HTTP (Not here yet). First candidates are javascript and python, to be used in the web and command line interfaces.
 
-Currently the project is focused on operations that output files, in particular operations on geographical data and images.
-Some operations will be included in the project itself, but on the long term this will be a container/framework and operations will be added by other django apps. 
+* REST api to get metadata about accessible operations and endpoints to run them, based ond Django and [webops-django] (https://github.com/inmagik/webops-django) 
+* a web interface to configure and run operations, based on Angular and [webops-angular](https://github.com/inmagik/webops-angular)
+
+Operations can also be consumed by:
+
+* a command line interface: [webops-cmd](https://github.com/inmagik/webops-cmd)
+* a python lib that works with the rest api: [webops-py](https://github.com/inmagik/webops-py)
+
+
+Operations can return:
+
+* a file, that can be downloaded
+* another kind of result
+
+
+As of now, this project includes some example operations on geographical data and images.
+
 
 ## SETUP 
 Activate your environment, then update requirments

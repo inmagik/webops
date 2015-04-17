@@ -1,6 +1,6 @@
-from opsmanager.ops import BaseOp
-from opsmanager.helpers import write_to_temp, unzip_to_temp, zip_to_temp
-from opsmanager.serializers import SingleFileParamsSerializer
+from webops_django.ops import BaseOp
+from webops_django.helpers import write_to_temp, unzip_to_temp, zip_to_temp
+from webops_django.serializers import SingleFileParamsSerializer
 from rest_framework import serializers
 
 class DummyOp(BaseOp):
@@ -46,8 +46,8 @@ class BinaryNumberInputSerializer(serializers.Serializer):
 
 
 import operator
-from opsmanager.wrappers import wrap_function
-from opsmanager.register import _register
+from webops_django.wrappers import wrap_function
+from webops_django.register import _register
 wrapped = [operator.add, operator.sub, operator.mul, operator.div, operator.pow]
 for w in wrapped:
     x = wrap_function("com.inmagik."+w.__name__, w, BinaryNumberInputSerializer, serializers.FloatField())

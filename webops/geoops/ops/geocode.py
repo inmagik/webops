@@ -20,9 +20,6 @@ def geocode(line):
     except:
         return None
 
-    
-
-
 
 class GeocodeParamsSerializer(serializers.Serializer):
     in_file = FileField(help_text='Input file')
